@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+    function App(){
+        
+        let [b,addVal]=React.useState({name:""})
+        let [c,arrayObj]=React.useState([])
+        function adddata(e){
+            e.preventDefault()
+            
+            arrayObj([...c,b])
+            console.log(c)
+            addVal({name:""})
+        }
+        
+        function checkbox(e,i){
+            
+            let add=c.map((v,index)=>{
+                if((e.target.checked===true)&&(index===i)){
+                    v.completed="Completed"
+                }else{
+                    v.completed="not Completed"
+                }
+                return v
+            })
+            arrayObj(add)
+        }
+        function remove(e,i){
+            c.splice(i,1)
+            console.log(c)
+            addVal({name:""})
+        }
+        return(
+            <>
+            <form onSubmit={adddata}>
+                <input type="text" placeholder="ADD NAME OF ITEM" value={b.name} onChange={(e)=>{addVal({...b,name:e.target.value,completed:"not Completed"})}}/>
+                <input type="submit"/>
+            </form>
+            <div>
+                {
+                    c.map((v,index)=>{
+                        return(
+                            <div style={{border:"1px solid black"}} key={index}>
+                                <h3>{v.name}</h3>
+                                <button onClick={(e)=>{remove(e,index)}}>Remove</button>
+                                <input type="checkbox" onChange={(e)=>{checkbox(e,index)}}/>
+                                <span>{v.completed}</span>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            </>
+        )
+    }
+
+    ReactDOM.render(<App/>,document.getElementById("root"))
+  </script>
+</html>
